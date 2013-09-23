@@ -179,6 +179,7 @@ void CModel::drawPBufferBW(CMesh* aMesh, drawmode aMode, vector<CTensor<float> >
       draw_object_tex(aMesh, SILHOUETTE, 0, 0, 0);
     }
 
+//	cout << "Overlay " << aOverlay << endl;
     if(aOverlay) {
       glDisable(GL_DEPTH_TEST);
       glDepthMask(GL_FALSE);
@@ -212,10 +213,21 @@ void CModel::drawPBufferBW(CMesh* aMesh, drawmode aMode, vector<CTensor<float> >
     
     // draw object
     if(aMode == POINTS)
-      draw_object_points(aMesh, aMode, aR, aG, aB);
+	{
+//		aR = 255; aG = 0; aB = 80; // Change color of points to red if you want
+      		draw_object_points(aMesh, aMode, aR, aG, aB);
+	}
     else
-      draw_object_tex(aMesh, aMode, aR, aG, aB);
-
+	draw_object_tex(aMesh, aMode, aR, aG, aB);
+/* My changes to also show the mesh in yellow in addition to the points
+	{
+		aMode = MESH;
+		aR = 255;
+		aG = 255;
+		aB = 80;
+      		draw_object_tex(aMesh, MESH, aR, aG, aB);
+	}
+*/
     // Read the data from the PBuffer.
     glReadPixels( 0, 0, mWidth, mHeight, GL_RGB, GL_UNSIGNED_BYTE, glImg );
 
@@ -249,20 +261,25 @@ void CModel::draw_object_tex(CMesh* aMesh, drawmode aMode, GLubyte aR, GLubyte a
   // settings according to selected mode
   switch(aMode) {
   case TEXTURE:
+cout << "aMode1 " << TEXTURE << endl;
     glEnable(GL_TEXTURE_2D);
     break;
   case SILHOUETTE: 
+cout << "aMode1 " << SILHOUETTE << endl;
     glColor4ub(aR,aG,aB, aA);
     break;
   case MESH: 
+cout << "aMode1 " << MESH << endl;
     glColor4ub(aR,aG,aB, aA);
     glPolygonMode(GL_FRONT, GL_LINE);
     break;
   case POINTS: 
+cout << "aMode1 " << POINTS << endl;
     glColor4ub(aR,aG,aB, aA);
     glPolygonMode(GL_FRONT, GL_POINT);
     break;
   case COLORINDEXPOINTS:
+cout << "aMode1 " << COLORINDEXPOINTS << endl;
     glShadeModel(GL_SMOOTH);
     glPolygonMode(GL_FRONT, GL_POINT);
     break;
@@ -275,13 +292,16 @@ void CModel::draw_object_tex(CMesh* aMesh, drawmode aMode, GLubyte aR, GLubyte a
     aMesh->GetPoint(vIndex[2],c[0],c[1],c[2]);
     
     switch(aMode) {
+
     case TEXTURE:
+cout << "aMode2 " << TEXTURE << endl;
       if((int)mTexCoord(i,0) != texIndex) {
 	texIndex = (int)mTexCoord(i,0);
 	glBindTexture(GL_TEXTURE_2D, tex_id[texIndex]);
       }
       break;
     case COLORINDEX:
+	cout << "aMode2 " << COLORINDEX << endl;
       ++cIndex;
       A = cIndex & 0xff; 
       B = (cIndex >> 8) & 0xff; 
@@ -290,9 +310,11 @@ void CModel::draw_object_tex(CMesh* aMesh, drawmode aMode, GLubyte aR, GLubyte a
       glColor4ub(R, G, B, A);
       break;
     case COLORCOMPONENTS:
+cout << "aMode2 " << COLORCOMPONENTS << endl;
       glColor4ub(aMesh->GetBodyPart( aMesh->GetJointID(vIndex[0]) ) + 1, 0, 0, 0);
       break;
     case SETCOLORCOMPONENTS:
+cout << "aMode2 " << SETCOLORCOMPONENTS << endl;
       glColor4f((*aGray)[aMesh->GetBodyPart( aMesh->GetJointID(vIndex[0]) ) + 1], 0, 0, 0);
       break;
     }
@@ -376,6 +398,9 @@ void CModel::draw_object_points(CMesh* aMesh, drawmode aMode, GLubyte aR, GLubyt
 
   glBegin (GL_POINTS);
 
+	glEnable(GL_PROGRAM_POINT_SIZE_EXT);
+	glPointSize(100);
+
   for(int i=0;i<aMesh->GetPointSize();++i) {	
     aMesh->GetPoint(i,a[0],a[1],a[2]);
     
@@ -385,6 +410,7 @@ void CModel::draw_object_points(CMesh* aMesh, drawmode aMode, GLubyte aR, GLubyt
       B = (cIndex >> 8) & 0xff; 
       G = (cIndex >> 16) & 0xff; 
       R = (cIndex >> 24) & 0xff;
+cout << "cIndex " << cIndex << " A " <<  A << " B " << B << " G " << G << " R " << R << endl;
       glColor4ub(R, G, B, A);
     }    
 

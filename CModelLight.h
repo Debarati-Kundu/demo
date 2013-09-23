@@ -102,7 +102,10 @@ public:
   void resetColor() {mR = 1.0; mG = 1.0; mB = 1.0;};
 
   // generate mesh, silhouette or visible points from given pose
-  void generateMesh(CMesh* aMesh, std::vector<CTensor<float> >& aImage, GLubyte aR, GLubyte aG, GLubyte aB, bool aOverlay = false) const {drawPBufferBW(aMesh, MESH, aImage, aR, aG, aB, aOverlay);};
+  void generateMesh(CMesh* aMesh, std::vector<CTensor<float> >& aImage, GLubyte aR, GLubyte aG, GLubyte aB, bool aOverlay = false) const {drawPBufferBW(aMesh, /*MESH*/POINTS, aImage, aR, aG, aB, aOverlay);};
+
+//  void generateMesh(CMesh* aMesh, std::vector<CTensor<float> >& aImage, GLubyte aR, GLubyte aG, GLubyte aB, bool aOverlay = false) const {draw_object_points(aMesh, COLORINDEXPOINTS
+//, aR, aG, aB);};
 
   // Fast projection of a 3-D point to the image plane
   inline void projectPoint(int aView, const CVector<float>& v3D, int& x, int& y) const;

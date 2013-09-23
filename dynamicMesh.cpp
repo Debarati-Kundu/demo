@@ -91,6 +91,7 @@ void initGLUT() {
 // Main                                                            //
 /////////////////////////////////////////////////////////////////////
 
+// Presently projecting on a black image instead of an actual image, but in the same location as in the original image 
 int main(int argc, char** argv) {
   
   // ************** Read Input ************* //

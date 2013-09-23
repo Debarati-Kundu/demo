@@ -4,7 +4,7 @@
 #include <Show.h>
 using namespace std;
 
-#define PNGPATH "../skelsurf_data/dog_im/"
+#define PNGPATH "../skelsurf_data/dog_im/black.png"
 
 CGrabber::CGrabber(string s) {
   cout << s << endl;
@@ -32,7 +32,7 @@ CGrabber::CGrabber(string s) {
  
   framecounter = 0; 
   for (int v = 0; v<Frame.size(); ++v) {
-	string a = PNGPATH +  Image(v,framecounter);
+	string a = PNGPATH;// +  Image(v,framecounter);
 	Frame[v].readFromPNG(a.c_str());
 //    Frame[v].readFromPNG(Image(v,framecounter).c_str());
   } 
@@ -51,7 +51,7 @@ bool CGrabber::nextFrame(int inc) {
   if(framecounter < Image.ySize()) {
 
     for (int v = 0; v<Frame.size(); ++v) {
-	string a = PNGPATH +  Image(v,framecounter);
+	string a = PNGPATH;// +  Image(v,framecounter);
 	Frame[v].readFromPNG(a.c_str());
 //      Frame[v].readFromPNG(Image(v,framecounter).c_str());
     } 

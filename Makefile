@@ -19,7 +19,7 @@ CC=g++
 OBJS = Show.o CTMeshLight.o CModelLight.o pbuffer.o CGrabber.o
 
 clean:
-		rm -f *.o *~ ShowMesh
+		rm -f *.o *~ ShowMesh out
 			
 all:	ShowMesh
 		echo all: make complete
